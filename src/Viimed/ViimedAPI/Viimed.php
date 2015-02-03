@@ -8,7 +8,7 @@ use GuzzleHttp\Client as Http;
  */
 class Viimed {
 
-	const BASE_URL = 'https://gwn-demo.viinetwork.net/api/v2';
+	const BASE_URL = 'https://gwn-demo.viinetwork.net/';
 
 	public static function connect($ViiPartnerID, $ViiPartnerSecret, $ViiClientID)
 	{
