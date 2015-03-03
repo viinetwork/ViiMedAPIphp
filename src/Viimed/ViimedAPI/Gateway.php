@@ -11,6 +11,8 @@ class Gateway implements GatewayInterface, AuthServiceInterface {
 
 	const ALGORITHM = 'sha1';
 	const API_VERSION = 'v2';
+	const DATE_KEY = 'X-VII-DATE';
+	const DATE_FORMAT = 'Ymd\THis\Z';
 
 	protected $http;
 	protected $ViiPartnerID;
@@ -36,7 +38,8 @@ class Gateway implements GatewayInterface, AuthServiceInterface {
 			'ViiPartnerID' =>  $this->ViiPartnerID,
 			'ViiClientID' => $this->ViiClientID,
 			'Identifier' => $Identifier,
-			'IdentifierID' => $IdentifierID
+			'IdentifierID' => $IdentifierID,
+			static::DATE_KEY => date(static::DATE_FORMAT)
 		];
 
 		$params['Hash'] = $this->makeHash( $params );
