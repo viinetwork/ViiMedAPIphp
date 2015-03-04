@@ -24,7 +24,7 @@ class ViimedTest extends \Codeception\TestCase\Test {
 
 	public function testAuthServiceInterface()
 	{
-		$Identifier = 'ViimedUser';
+		$Identifier = 'GetWellUser';
 		$IdentifierID = 42;
 
 		// Make Token
