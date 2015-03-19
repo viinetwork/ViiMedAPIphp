@@ -1,16 +1,18 @@
-<?php namespace Viimed\ViiGlobalID;
+<?php namespace Viimed\PhpApi\Gateways;
 
 use DateTime;
-use InvalidArgumentException;
-use GuzzleHttp\Client as Http;
-use GuzzleHttp\Exception\RequestException;
-use Aaronbullard\Exceptions\NotFoundException;
-use Viimed\ViimedAPI\Exceptions\ViimedAPIException;
-use Viimed\ViiGlobalID\Interfaces\PassportInterface;
-use Viimed\ViiGlobalID\Interfaces\PatientInterface;
-use Viimed\ViiGlobalID\Models\Patient;
+use Viimed\PhpApi\Interfaces\PatientInterface;
+use Viimed\PhpApi\Exceptions\RequestException;
+use Viimed\PhpApi\Models\Patient;
 
 class PatientGateway extends Gateway implements PatientInterface {
+
+	const DOB_FORMAT = 'Y-m-d';
+
+	public function findById($globaluser_id)
+	{
+		return $this->findPatientByGlobalUserID($globaluser_id);
+	}
 
 	public function findPatientByGlobalUserID($globaluser_id)
 	{
@@ -21,7 +23,7 @@ class PatientGateway extends Gateway implements PatientInterface {
 		return $this->executeCall( $request )->data;
 	}
 
-	public function savePatient(Patient $patient)
+	public function save(Patient $patient)
 	{
 		 // update vs save if id is set
 		if(isset($patient->globaluser_id))
@@ -29,7 +31,7 @@ class PatientGateway extends Gateway implements PatientInterface {
 			return $this->updatePatient($patient);
 		}
 
-		$route = $this->getRoute("globalusers");
+		$route = $this->getRoute("patients");
 
 		$request = $this->http->createRequest("POST", $route, [
 			'body' => (array) $patient
@@ -40,21 +42,21 @@ class PatientGateway extends Gateway implements PatientInterface {
 
 	protected function updatePatient(Patient $patient)
 	{
-		$route = $this->getRoute("globalusers");
+		$route = $this->getRoute("patients/{$patient->globaluser_id}");
 
 		$params = (array) $patient;
 		$params['_method'] = 'PUT';
 
-		$request = $this->http->createRequest("PUT", $route, [
+		$request = $this->http->createRequest("POST", $route, [
 			'body' => $params
 		]);
 
 		return $this->executeCall( $request )->data;
 	}
 
-	public function deletePatient(Patient $patient)
+	public function delete(Patient $patient)
 	{
-		$route = $this->getRout("globalusers/{$patient->globaluser_id}");
+		$route = $this->getRoute("patients/{$patient->globaluser_id}");
 
 		$request = $this->http->createRequest("DELETE", $route, []);
 
@@ -63,7 +65,7 @@ class PatientGateway extends Gateway implements PatientInterface {
 
 	public function searchForPatientsWhere(DateTime $dob = NULL, $lname = NULL, $ssn = NULL, $gender = NULL, $limit = NULL, $offset = NULL)
 	{
-		$dob = $dob->format('Y-m-d');
+		$dob = is_null($dob) ? $dob : $dob->format(static::DOB_FORMAT);
 
 		$query = array_filter(compact('dob', 'lname', 'ssn', 'gender', 'limit', 'offset'), function($q){
 			return ! is_null($q);
@@ -83,7 +85,7 @@ class PatientGateway extends Gateway implements PatientInterface {
 		$patient = $this->searchForPatientsWhere($dob, $lname, $ssn, $gender);
 
 		if( count($patient) !== 1)
-			throw new NotFoundException("Patient could not be found.");
+			throw new RequestException("Patient could not be found.");
 
 		return $patient[0];
 	}

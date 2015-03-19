@@ -10,16 +10,16 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "guzzlehttp/guzzle": "~4.0",
-        "aaronbullard/exceptions": "dev-master"
+        "guzzlehttp/guzzle": "~4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
-        "codeception/codeception": "2.1.*@dev"
+        "codeception/codeception": "2.1.*@dev",
+        "mockery/mockery": "0.9.*@dev"
     },
     "autoload": {
         "psr-4": {
-            "Viimed\\": "src/Viimed/"
+            "Viimed\\PhpApi\\": "src/"
         }
     },
     "minimum-stability": "dev"

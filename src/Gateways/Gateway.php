@@ -1,14 +1,17 @@
-<?php namespace Viimed\ViiGlobalID\Gateways;
+<?php namespace Viimed\PhpApi\Gateways;
 
 use GuzzleHttp\Client as Http;
+use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Exception\RequestException;
-use Viimed\ViimedAPI\Exceptions\ViimedAPIException;
+use Viimed\PhpApi\Exceptions\RequestException as ViimedRequestException;
 
-class Gateway {
+abstract class Gateway {
 
 	const API_VERSION = 'v2';
 
 	protected $http;
+	
+	protected $route;
 
 	public function __construct(Http $http)
 	{
@@ -19,7 +22,7 @@ class Gateway {
 
 	public function getRoute($resource)
 	{
-		return $this->route . trim($resource, '/');
+		return rtrim($this->route . trim($resource, '/'), '/');
 	}
 
 	protected function getResponseBody()
@@ -27,7 +30,7 @@ class Gateway {
 		return $this->response;
 	}
 
-	protected function executeCall($request)
+	protected function executeCall(RequestInterface $request)
 	{
 		try
 		{
@@ -35,14 +38,14 @@ class Gateway {
 
 			if( $this->response->status === 'error')
 			{
-				throw new ViimedAPIException($this->response->errors->message);
+				throw new ViimedRequestException($this->response->errors->message);
 			}
 
 			return $this->response;
 		}
 		catch(RequestException $e) // Catch guzzle exception
 		{
-			throw new ViimedAPIException($e->getMessage(), $e->getCode(), $e);
+			throw new ViimedRequestException($e->getMessage(), $e->getCode(), $e);
 		}
 	}
 }

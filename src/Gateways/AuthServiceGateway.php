@@ -1,35 +1,27 @@
-<?php namespace Viimed\ViimedAPI;
+<?php namespace Viimed\PhpApi\Gateways;
 
 use GuzzleHttp\Client as Http;
-use GuzzleHttp\Exception\RequestException;
-use Viimed\ViimedAPI\Interfaces\AuthServiceInterface;
-use Viimed\ViimedAPI\Interfaces\GatewayInterface;
-use Viimed\ViimedAPI\Exceptions\ViimedAPIException;
-use Viimed\ViimedAPI\Exceptions\InvalidTokenException;
+use Viimed\PhpApi\Interfaces\AuthServiceInterface;
+use Viimed\PhpApi\Exceptions\ViimedAPIException;
+use Viimed\PhpApi\Exceptions\RequestException;
+use Viimed\PhpApi\Exceptions\InvalidTokenException;
 
-class Gateway implements GatewayInterface, AuthServiceInterface {
+class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 
 	const ALGORITHM = 'sha1';
-	const API_VERSION = 'v2';
 	const DATE_KEY = 'X-VII-DATE';
 	const DATE_FORMAT = 'Ymd\THis\Z';
 
-	protected $http;
 	protected $ViiPartnerID;
 	protected $ViiPartnerSecret;
 	protected $ViiClientID;
 
-	protected $route;
-	protected $response;
-
 	public function __construct(Http $http, $ViiPartnerID, $ViiPartnerSecret, $ViiClientID)
 	{
-		$this->http = $http;
+		parent::__construct($http);
 		$this->ViiPartnerID = $ViiPartnerID;
 		$this->ViiPartnerSecret = $ViiPartnerSecret;
 		$this->ViiClientID = $ViiClientID;
-
-		$this->route = "api/" . static::API_VERSION . "/authtokens";
 	}
 
 	public function generateToken($Identifier, $IdentifierID)
@@ -44,7 +36,7 @@ class Gateway implements GatewayInterface, AuthServiceInterface {
 
 		$params['Hash'] = $this->makeHash( $params );
 
-		$request = $this->http->createRequest('POST', $this->route, [
+		$request = $this->http->createRequest('POST', $this->getRoute("authtokens"), [
 			'body'	=> $params
 		]);
 
@@ -53,7 +45,7 @@ class Gateway implements GatewayInterface, AuthServiceInterface {
 
 	protected function makeHash(array $params)
 	{
-		$url = $this->http->getBaseUrl() . $this->route;
+		$url = $this->http->getBaseUrl() . $this->getRoute("authtokens");
 
 		ksort( $params ); // sort alphabetically
 
@@ -69,14 +61,14 @@ class Gateway implements GatewayInterface, AuthServiceInterface {
 		$params['ViiPartnerID'] = $this->ViiPartnerID;
 		$params['ViiClientID'] = $this->ViiClientID;
 
-		$request = $this->http->createRequest('GET', $this->route, [
+		$request = $this->http->createRequest('GET', $this->getRoute("authtokens"), [
 			'query'	=> $params
 		]);
 
 		try{
 			return $this->executeCall( $request )->data;
 		}
-		catch(ViimedAPIException $e)
+		catch(RequestException $e)
 		{
 			throw new InvalidTokenException( InvalidTokenException::FAILED );
 		}
@@ -88,35 +80,11 @@ class Gateway implements GatewayInterface, AuthServiceInterface {
 		$params['ViiPartnerID'] = $this->ViiPartnerID;
 		$params['ViiClientID'] = $this->ViiClientID;
 
-		$request = $this->http->createRequest("DELETE", $this->route, [
+		$request = $this->http->createRequest("DELETE", $this->getRoute("authtokens"), [
 			'body'	=> $params
 		]);
 
 		return $this->executeCall( $request );
-	}
-
-	public function getResponseBody()
-	{
-		return $this->response;
-	}
-
-	protected function executeCall($request)
-	{
-		try
-		{
-			$this->response = json_decode($this->http->send( $request )->getBody()->getContents());
-
-			if( $this->response->status === 'error')
-			{
-				throw new ViimedAPIException($this->response->errors->message);
-			}
-
-			return $this->response;
-		}
-		catch(RequestException $e) // Catch guzzle exception
-		{
-			throw new ViimedAPIException($e->getMessage(), $e->getCode(), $e);
-		}
 	}
 
 }

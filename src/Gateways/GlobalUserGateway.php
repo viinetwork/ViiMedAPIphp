@@ -1,11 +1,11 @@
-<?php namespace Viimed\ViiGlobalID\Gateways;
+<?php namespace Viimed\PhpApi\Gateways;
 
-use InvalidArgumentException;
-use Viimed\ViiGlobalID\Interfaces\PassportInterface;
+use Viimed\PhpApi\Interfaces\GlobalUserInterface;
+use Viimed\PhpApi\Exceptions\RequestException;
 
-class PassportGateway implements PassportInterface {
+class GlobalUserGateway extends Gateway implements GlobalUserInterface {
 
-	public function findGlobalUserById($globaluser_id)
+	public function findById($globaluser_id)
 	{
 		$route = $this->getRoute("globalusers/$globaluser_id");
 
@@ -16,7 +16,7 @@ class PassportGateway implements PassportInterface {
 
 	public function getExternalIDs($globaluser_id)
 	{
-		$globaluser = $this->findGlobalUserById($globaluser_id);
+		$globaluser = $this->findById($globaluser_id);
 
 		return $globaluser->externalIDs;
 	}
@@ -33,7 +33,7 @@ class PassportGateway implements PassportInterface {
 		});
 
 		if( count($filtered) > 1)
-			throw new InvalidArgumentException("There is more than one External ID for this source. Please provide an Identifier Name.");
+			throw new RequestException("There is more than one External ID for this source. Please provide an Identifier Name.");
 
 		return $filtered[0]->value;
 	}

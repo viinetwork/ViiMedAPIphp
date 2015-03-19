@@ -1,4 +1,4 @@
-<?php namespace Viimed\ViiGlobalID\Models;
+<?php namespace Viimed\PhpApi\Models;
 
 class Patient {
 	

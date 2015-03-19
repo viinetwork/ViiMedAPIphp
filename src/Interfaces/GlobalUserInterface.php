@@ -1,7 +1,7 @@
-<?php namespace Viimed\ViiGlobalID\Interfaces;
+<?php namespace Viimed\PhpApi\Interfaces;
 
-interface PassportInterface {
-	public function findGlobalUserById($globaluser_id);
+interface GlobalUserInterface {
+	public function findById($globaluser_id);
 	public function getExternalIDs($globaluser_id);
 	public function findExternalIDValue($globaluser_id, $source_name, $identifier_name = NULL);
 }

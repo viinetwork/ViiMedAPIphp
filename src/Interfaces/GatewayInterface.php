@@ -1,4 +1,4 @@
-<?php namespace Viimed\ViimedAPI\Interfaces;
+<?php namespace Viimed\PhpApi\Interfaces;
 
 interface GatewayInterface {
 	public function getResponseBody();
