@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Viimed\\ViimedAPI\\": "src/Viimed/ViimedAPI/"
+            "Viimed\\": "src/Viimed/"
         }
     },
     "minimum-stability": "dev"
