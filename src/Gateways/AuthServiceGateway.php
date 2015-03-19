@@ -1,6 +1,7 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
 use GuzzleHttp\Client as Http;
+use Viimed\PhpApi\Interfaces\SignatureInterface;
 use Viimed\PhpApi\Interfaces\AuthServiceInterface;
 use Viimed\PhpApi\Exceptions\ViimedAPIException;
 use Viimed\PhpApi\Exceptions\RequestException;
@@ -12,13 +13,15 @@ class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 	const DATE_KEY = 'X-VII-DATE';
 	const DATE_FORMAT = 'Ymd\THis\Z';
 
+	protected $hasher;
 	protected $ViiPartnerID;
 	protected $ViiPartnerSecret;
 	protected $ViiClientID;
 
-	public function __construct(Http $http, $ViiPartnerID, $ViiPartnerSecret, $ViiClientID)
+	public function __construct(Http $http, SignatureInterface $hasher, $ViiPartnerID, $ViiPartnerSecret, $ViiClientID)
 	{
 		parent::__construct($http);
+		$this->hasher = $hasher;
 		$this->ViiPartnerID = $ViiPartnerID;
 		$this->ViiPartnerSecret = $ViiPartnerSecret;
 		$this->ViiClientID = $ViiClientID;
@@ -34,7 +37,8 @@ class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 			static::DATE_KEY => date(static::DATE_FORMAT)
 		];
 
-		$params['Hash'] = $this->makeHash( $params );
+		$url = $this->http->getBaseUrl() . "/" .  $this->getRoute("authtokens");
+		$params['Hash'] = $this->hasher->makeHash($this->ViiPartnerSecret, $url, $params );
 
 		$request = $this->http->createRequest('POST', $this->getRoute("authtokens"), [
 			'body'	=> $params
@@ -42,18 +46,6 @@ class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 
 		return $this->executeCall( $request )->data;
 	}
-
-	protected function makeHash(array $params)
-	{
-		$url = $this->http->getBaseUrl() . $this->getRoute("authtokens");
-
-		ksort( $params ); // sort alphabetically
-
-		$fullUrl = empty($params) ? $url : $url . '?' . http_build_query($params);
-
-		return hash_hmac(static::ALGORITHM, $fullUrl, $this->ViiPartnerSecret);
-	}
-
 
 	public function validateToken($Token, $Identifier, $IdentifierID)
 	{

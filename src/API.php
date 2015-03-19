@@ -1,6 +1,8 @@
 <?php namespace Viimed\PhpApi;
 
+use RuntimeException;
 use GuzzleHttp\Client as Http;
+use Viimed\PhpApi\Services\Signature;
 use Viimed\PhpApi\Gateways\AuthServiceGateway;
 use Viimed\PhpApi\Gateways\GlobalUserGateway;
 use Viimed\PhpApi\Gateways\PatientGateway;
@@ -20,7 +22,7 @@ class API {
 		// Authservice
 		$authserviceHttp = new Http(['base_url' => $config['base_urls']['authservice']]);
 		$manager->setGateway(
-			new AuthServiceGateway($authserviceHttp, $ViiPartnerID, $ViiPartnerSecret, $ViiClientID)
+			new AuthServiceGateway($authserviceHttp, new Signature, $ViiPartnerID, $ViiPartnerSecret, $ViiClientID)
 		);
 
 		// Globalusers, Patients, Emrs
@@ -34,7 +36,12 @@ class API {
 
 	public static function getConfig()
 	{
-		return require __DIR__ . '/config.php';
+		$config = require __DIR__ . '/config.php';
+
+		if( ! is_array($config))
+			throw new RuntimeException("Error retrieving configuration.");
+
+		return $config;
 	}
 
 }

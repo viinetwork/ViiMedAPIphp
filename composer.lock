@@ -4,45 +4,8 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3c50a54caeba071eeb48922bc28e05f1",
+    "hash": "0f6b62eafb074c37109e27463d993b81",
     "packages": [
-        {
-            "name": "aaronbullard/exceptions",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/aaronbullard/exceptions.git",
-                "reference": "5bfd37399adfa3e4f3da70721d810d1589dbf40b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/aaronbullard/exceptions/zipball/5bfd37399adfa3e4f3da70721d810d1589dbf40b",
-                "reference": "5bfd37399adfa3e4f3da70721d810d1589dbf40b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "codeception/codeception": "dev-master",
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Aaronbullard\\Exceptions": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Aaron Bullard",
-                    "email": "JABullard@aol.com"
-                }
-            ],
-            "description": "abstract exception handler",
-            "time": "2015-02-11 20:00:58"
-        },
         {
             "name": "guzzlehttp/guzzle",
             "version": "4.2.3",
@@ -344,12 +307,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/padraic/mockery.git",
-                "reference": "8f49adc0fccd0575e2a156a52046e6c6ed7a5c60"
+                "reference": "43006b6c41e8fa9ac7469ceea2efd8abbcb20657"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/8f49adc0fccd0575e2a156a52046e6c6ed7a5c60",
-                "reference": "8f49adc0fccd0575e2a156a52046e6c6ed7a5c60",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/43006b6c41e8fa9ac7469ceea2efd8abbcb20657",
+                "reference": "43006b6c41e8fa9ac7469ceea2efd8abbcb20657",
                 "shasum": ""
             },
             "require": {
@@ -401,7 +364,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2015-03-13 10:47:42"
+            "time": "2015-03-19 19:27:19"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1530,7 +1493,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "aaronbullard/exceptions": 20,
         "codeception/codeception": 20,
         "mockery/mockery": 20
     },
