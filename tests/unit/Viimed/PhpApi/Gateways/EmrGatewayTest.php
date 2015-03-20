@@ -40,4 +40,26 @@ class EmrGatewayTest extends \Codeception\TestCase\Test
 		$this->assertTrue( $bool );
 	}
 
+	public function testGetAll()
+	{
+		$route = 'api/v2/emrs';
+		$returnData = TRUE;
+
+		$http = $this->tester->mockHttpWithRequest('GET', $route, [], $returnData);
+		$bool = (new EmrGateway($http))->getAll();
+		$this->assertTrue( $bool );
+
+		$limit = 10;
+		$offset = 5;
+		$params = [
+			'query' => [
+				'limit' => $limit,
+				'offset' => $offset
+			]
+		];
+		$http = $this->tester->mockHttpWithRequest('GET', $route, $params, $returnData);
+		$bool = (new EmrGateway($http))->getAll($limit, $offset);
+		$this->assertTrue( $bool );
+	}
+
 }

@@ -1,6 +1,7 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
 use Mockery;
+use Viimed\PhpApi\Models\ExternalID;
 
 class GlobalUserGatewayTest extends \Codeception\TestCase\Test
 {
@@ -76,6 +77,35 @@ class GlobalUserGatewayTest extends \Codeception\TestCase\Test
 		
 		$idValue = (new GlobalUserGateway($http))->findExternalIDValue($globaluser_id, "two");
 		$this->assertEquals(2, $idValue);
+	}
+
+	public function testAddExternalID()
+	{
+		$SourceIdentifierID = 1;
+		$Value = 42;
+		$externalID = new ExternalID($SourceIdentifierID, $Value);
+
+		$route = 'api/v2/globalusers/1';
+		$params = [
+			'body' => compact('SourceIdentifierID', 'Value')
+		];
+		$returnData = TRUE;
+
+		$http = $this->tester->mockHttpWithRequest('POST', $route, $params, $returnData);
+		
+		$bool = (new GlobalUserGateway($http))->addExternalID(1, $externalID);
+		$this->assertTrue( $bool );
+	}
+
+	public function testRemoveExternalID()
+	{
+		$route = 'api/v2/globalusers/1/externalids/3';
+		$returnData = TRUE;
+
+		$http = $this->tester->mockHttpWithRequest('DELETE', $route, [], $returnData);
+		
+		$bool = (new GlobalUserGateway($http))->removeExternalID(1, 3);
+		$this->assertTrue( $bool );
 	}
 
 }

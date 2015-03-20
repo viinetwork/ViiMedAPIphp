@@ -43,6 +43,7 @@ class GatewayManager {
 
 	public function __call($method, $args)
 	{
+		$method = rtrim($method, 's');
 		return $this->getGateway($method);
 	}
 }

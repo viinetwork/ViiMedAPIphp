@@ -25,7 +25,7 @@ abstract class Gateway {
 		return rtrim($this->route . trim($resource, '/'), '/');
 	}
 
-	protected function getResponseBody()
+	public function getResponseBody()
 	{
 		return $this->response;
 	}
