@@ -1,5 +1,6 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
+use BadMethodCallException;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -18,6 +19,11 @@ abstract class Gateway {
 		$this->http = $http;
 
 		$this->route = "api/" . static::API_VERSION . "/";
+	}
+
+	public function __call($method, $args)
+	{
+		throw new BadMethodCallException(__METHOD__ . " does not exist.");
 	}
 
 	public function getRoute($resource)
