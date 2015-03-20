@@ -24,7 +24,7 @@ class APITest extends \Codeception\TestCase\Test
 	public function testConnectReturnsGatewayManager()
 	{
 		$config = API::getConfig();
-		$gateway = API::connect($config['credentials']['ViiPartnerID'], md5('viimed'), $config['credentials']['ViiClientID']);
+		$gateway = API::connect('ViiPartnerID', md5('some_secret'), 'ViiClientID');
 
 		$this->assertInstanceOf('Viimed\\PhpApi\\GatewayManager', $gateway);
 	}
