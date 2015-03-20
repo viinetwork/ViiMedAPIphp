@@ -16,16 +16,18 @@ class GatewayManagerTest extends \Codeception\TestCase\Test
 		$this->manager = new GatewayManager;
 	}
 
-	protected function makeGateway()
+	public function mockGateway($shortClassName)
 	{
 		$http = Mockery::mock('GuzzleHttp\\Client');
 
-		return new Gateways\EmrGateway($http);
+		$class = "Viimed\\PhpApi\\Gateways\\$shortClassName";
+
+		return new $class($http);
 	}
 
 	public function testMakingIndexName()
 	{
-		$gateway = $this->makeGateway();
+		$gateway = $this->mockGateway('EmrGateway');
 
 		$index = GatewayManager::getIndexName($gateway);
 		
@@ -35,7 +37,7 @@ class GatewayManagerTest extends \Codeception\TestCase\Test
 	// tests
 	public function testSettingGateway()
 	{
-		$gateway = $this->makeGateway();
+		$gateway = $this->mockGateway('EmrGateway');
 
 		$this->manager->setGateway($gateway);
 
@@ -44,11 +46,18 @@ class GatewayManagerTest extends \Codeception\TestCase\Test
 
 	public function testSettingAndGettingGateway()
 	{
-		$gateway = $this->testSettingGateway();
+		$gateways = ['PatientGateway', 'EmrGateway', 'GlobalUserGateway'];
 
-		$emrGateway = $this->manager->emr();
+		foreach($gateways as $gatewayName)
+		{
+			$gateway = $this->mockGateway( $gatewayName );
+			$this->manager->setGateway($gateway);
+		}
 
-		$this->assertEquals($gateway, $emrGateway);
+		foreach(['emrs', 'patients', 'globalUsers'] as $method)
+		{
+			$this->assertInstanceOf('Viimed\\PhpApi\\Gateways\\Gateway', $this->manager->{$method}(), "GatewayManager::$method doesn't exist.");
+		}
 	}
 
 	public function testRemovingGateway()
@@ -58,7 +67,7 @@ class GatewayManagerTest extends \Codeception\TestCase\Test
 		$this->manager->removeGateway('emr');
 
 		$this->setExpectedException('BadMethodCallException');
-		$this->manager->emr();
+		$this->manager->emrs();
 	}
 
 	public function testSettingDuplicateGateway()
