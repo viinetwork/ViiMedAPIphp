@@ -23,7 +23,7 @@ abstract class Gateway {
 
 	public function __call($method, $args)
 	{
-		throw new BadMethodCallException(__METHOD__ . " does not exist.");
+		throw new BadMethodCallException(get_called_class() . "::" . $method . "() does not exist.");
 	}
 
 	public function getRoute($resource)
