@@ -1,5 +1,7 @@
 <?php namespace Viimed\PhpApi\Models;
 
+use DateTime;
+
 class Patient {
 	
 	public $globaluser_id;
@@ -19,7 +21,7 @@ class Patient {
 	 *
 	 * @return void
 	 */
-	public function __construct($globaluser_id, $lname, $dob, $gender, $ssn = NULL, $fname = NULL, $mname = NULL, $alias = NULL, $birth_city = NULL, $birth_state = NULL, $birth_country = NULL)
+	public function __construct($globaluser_id, $lname, DateTime $dob, $gender, $ssn = NULL, $fname = NULL, $mname = NULL, $alias = NULL, $birth_city = NULL, $birth_state = NULL, $birth_country = NULL)
 	{
 		$this->globaluser_id = $globaluser_id;
 		$this->lname = $lname;

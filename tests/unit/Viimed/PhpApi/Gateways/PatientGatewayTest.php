@@ -1,6 +1,7 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
 use Mockery;
+use Viimed\PhpApi\Models\Patient;
 
 class PatientGatewayTest extends \Codeception\TestCase\Test
 {
@@ -12,6 +13,14 @@ class PatientGatewayTest extends \Codeception\TestCase\Test
 	protected function _after()
 	{
 		Mockery::close();
+	}
+
+	// tests
+	public function testItImplementsPatientInterface()
+	{
+		$http = $this->tester->makeHttp();
+		$gateway = new PatientGateway($http);
+		$this->assertInstanceOf('Viimed\\PhpApi\\Interfaces\\PatientInterface', $gateway);
 	}
 
 	// tests
@@ -92,6 +101,24 @@ class PatientGatewayTest extends \Codeception\TestCase\Test
 		$gateway = new PatientGateway($http);
 
 		$this->assertTrue( $gateway->searchForPatientsWhere($dob, 'LastName') );
+	}
+
+	public function testGetPatientsLike()
+	{
+		$dob = new \DateTime('2000-01-15');
+
+		$params = [
+			'query' => [
+				'dob' => '2000-01-15',
+				'lname' => 'LastName'
+			]
+		];
+
+		$http = $this->tester->mockHttpWithRequest('GET', 'api/v2/patients', $params, TRUE);
+
+		$gateway = new PatientGateway($http);
+		$patient = new Patient(NULL, 'LastName', $dob, NULL);
+		$this->assertTrue( $gateway->getPatientsLike($patient) );
 	}
 
 }

@@ -23,6 +23,13 @@ class PatientGateway extends Gateway implements PatientInterface {
 		return $this->executeCall( $request )->data;
 	}
 
+	public function getPatientsLike(Patient $patient, $limit = NULL, $offset = NULL)
+	{
+		extract((array) $patient);
+
+		return $this->searchForPatientsWhere($dob, $lname, $ssn, $gender, $limit, $offset);
+	}
+
 	public function save(Patient $patient)
 	{
 		 // update vs save if id is set
@@ -87,6 +94,6 @@ class PatientGateway extends Gateway implements PatientInterface {
 		if( count($patient) !== 1)
 			throw new RequestException("Patient could not be found.");
 
-		return $patient[0];
+		return current($patient);
 	}
 }

@@ -43,4 +43,20 @@ class UnitHelper extends \Codeception\Module
 
 		return json_encode( $obj );
 	}
+
+	public function mockSignature($hash = NULL)
+	{
+		$sig = Mockery::mock('Viimed\\PhpApi\\Services\\Signature', 'Viimed\\PhpApi\\Interfaces\\SignatureInterface');
+
+		if( is_null($hash))
+		{
+			$sig->shouldReceive('makeHash')->andReturn($hash);
+		}
+		else
+		{
+			$sig->shouldReceive('makeHash')->once()->andReturn( $hash );
+		}
+
+		return $sig;
+	}
 }

@@ -3,7 +3,6 @@
 use GuzzleHttp\Client as Http;
 use Viimed\PhpApi\Interfaces\SignatureInterface;
 use Viimed\PhpApi\Interfaces\AuthServiceInterface;
-use Viimed\PhpApi\Exceptions\ViimedAPIException;
 use Viimed\PhpApi\Exceptions\RequestException;
 use Viimed\PhpApi\Exceptions\InvalidTokenException;
 
@@ -37,7 +36,7 @@ class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 			static::DATE_KEY => date(static::DATE_FORMAT)
 		];
 
-		$url = $this->http->getBaseUrl() . "/" .  $this->getRoute("authtokens");
+		$url = rtrim($this->http->getBaseUrl(), '/') . "/" .  $this->getRoute("authtokens");
 		$params['Hash'] = $this->hasher->makeHash($this->ViiPartnerSecret, $url, $params );
 
 		$request = $this->http->createRequest('POST', $this->getRoute("authtokens"), [
@@ -76,7 +75,7 @@ class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 			'body'	=> $params
 		]);
 
-		return $this->executeCall( $request );
+		return $this->executeCall( $request )->data;
 	}
 
 }

@@ -2,7 +2,7 @@
 
 use Viimed\ViimedAPI\Exceptions\InvalidTokenException;
 
-class ViimedTest extends \Codeception\TestCase\Test {
+abstract class ViimedTest extends \Codeception\TestCase\Test {
 
 	/**
 	 * @var \FunctionalTester
