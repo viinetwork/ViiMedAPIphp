@@ -10,13 +10,20 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "guzzlehttp/guzzle": "~4.0"
+        "guzzlehttp/guzzle": "~4.0",
+        "viimed/contracts": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
         "codeception/codeception": "2.1.*@dev",
         "mockery/mockery": "0.9.*@dev"
     },
+    "repositories": [
+        {
+            "url": "https://github.com/viinetwork/viimedcontracts",
+            "type": "vcs"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Viimed\\PhpApi\\": "src/"

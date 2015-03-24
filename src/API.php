@@ -26,7 +26,7 @@ class API {
 			new AuthServiceGateway($authserviceHttp, new Signature, $ViiPartnerID, $ViiPartnerSecret, $ViiClientID)
 		);
 
-		static::hydrateWithCredenials($manager, compact('ViiPartnerID', 'ViiClientID', 'Identifier', 'IdentifierID'));
+		// static::hydrateWithCredentials($manager, compact('ViiPartnerID', 'ViiClientID', 'Identifier', 'IdentifierID'));
 
 		// Globalusers, Patients, Emrs
 		$globaluserHttp = new Http(['base_url' => $config['base_urls']['globaluser']]);
@@ -37,7 +37,7 @@ class API {
 		return $manager;
 	}
 
-	public static function hydrateWithCredenials(GatewayManager $manager, array $credentials)
+	protected static function hydrateWithCredentials(GatewayManager $manager, array $credentials)
 	{
 		$Token = $manager->authServices()->generateToken($credentials['Identifier'], $credentials['IdentifierID']);
 

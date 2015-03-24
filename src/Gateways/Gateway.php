@@ -51,7 +51,7 @@ abstract class Gateway {
 	protected function executeCall(RequestInterface $request)
 	{
 		// Add Token credentials
-		$this->decorateRequestQueryWithCredentials($request);
+		// $this->decorateRequestQueryWithCredentials($request);
 
 		try
 		{
