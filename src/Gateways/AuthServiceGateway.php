@@ -18,13 +18,19 @@ class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 	protected $ViiPartnerSecret;
 	protected $ViiClientID;
 
-	public function __construct(Http $http, SignatureInterface $hasher, $ViiPartnerID, $ViiPartnerSecret, $ViiClientID)
+	public function __construct(Http $http, SignatureInterface $hasher)
 	{
 		parent::__construct($http);
 		$this->hasher = $hasher;
+	}
+
+	public function setCredentials($ViiPartnerID, $ViiPartnerSecret, $ViiClientID)
+	{
 		$this->ViiPartnerID = $ViiPartnerID;
 		$this->ViiPartnerSecret = $ViiPartnerSecret;
 		$this->ViiClientID = $ViiClientID;
+
+		return $this;
 	}
 
 	public function generateToken($Identifier, $IdentifierID)
@@ -77,17 +83,6 @@ class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 		]);
 
 		return $this->executeCall( $request )->data;
-	}
-
-	/**
-	 * Override this method with NULL because not credentials have been received yet.  
-	 * That's the responsibility of this class.
-	 * @param  RequestInterface &$request
-	 * @return NULL
-	 */
-	protected function decorateRequestQueryWithCredentials(RequestInterface &$request)
-	{
-		return NULL;
 	}
 
 }

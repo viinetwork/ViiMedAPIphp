@@ -14,7 +14,7 @@ class API {
 
 	private function __construct(){}
 
-	public static function connect($ViiPartnerID, $ViiPartnerSecret, $ViiClientID, $Identifier = 'API', $IdentifierID = '1')
+	public static function connect()
 	{
 		$manager = new GatewayManager;
 
@@ -23,10 +23,8 @@ class API {
 		// Authservice
 		$authserviceHttp = new Http(['base_url' => $config['base_urls']['authservice']]);
 		$manager->setGateway(
-			new AuthServiceGateway($authserviceHttp, new Signature, $ViiPartnerID, $ViiPartnerSecret, $ViiClientID)
+			new AuthServiceGateway($authserviceHttp, new Signature)
 		);
-
-		// static::hydrateWithCredentials($manager, compact('ViiPartnerID', 'ViiClientID', 'Identifier', 'IdentifierID'));
 
 		// Globalusers, Patients, Emrs
 		$globaluserHttp = new Http(['base_url' => $config['base_urls']['globaluser']]);
@@ -35,15 +33,6 @@ class API {
 				->setGateway( new EmrGateway($globaluserHttp) );
 
 		return $manager;
-	}
-
-	protected static function hydrateWithCredentials(GatewayManager $manager, array $credentials)
-	{
-		$Token = $manager->authServices()->generateToken($credentials['Identifier'], $credentials['IdentifierID']);
-
-		$credentials['Token'] = $Token;
-
-		Gateway::setCredentials($credentials);
 	}
 
 	public static function getConfig()

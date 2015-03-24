@@ -10,7 +10,7 @@ class FunctionalHelper extends \Codeception\Module
 
 	public function getAPI()
 	{
-		return API::connect('VIIMED_1', '39dc4799819eb3632e3e20d72955d14f', 'DEVELOPR');
+		return API::connect();
 	}
 
 	public function getGlobalUserInterface()

@@ -24,12 +24,17 @@ class AuthServiceGatewayTest extends \Codeception\TestCase\Test
 
 		$http = $this->tester->makeHttp();
 		$signature = $this->tester->mockSignature(NULL);
-		$this->gateway = new AuthServiceGateway($http, $signature, $this->ViiPartnerID, $this->ViiPartnerSecret, $this->ViiClientID);
+		$this->gateway = new AuthServiceGateway($http, $signature);
+		$this->gateway->setCredentials($this->ViiPartnerID, $this->ViiPartnerSecret, $this->ViiClientID);
 	}
 
 	protected function makeGateway($http, SignatureInterface $sig)
 	{
-		return new AuthServiceGateway($http, $sig, $this->ViiPartnerID, $this->ViiPartnerSecret, $this->ViiClientID);
+		$gateway = new AuthServiceGateway($http, $sig);
+		
+		$gateway->setCredentials($this->ViiPartnerID, $this->ViiPartnerSecret, $this->ViiClientID);
+
+		return $gateway;
 	}
 
 	protected function _after()
