@@ -4,8 +4,12 @@ use Viimed\PhpApi\Interfaces\SignatureInterface;
 
 class Signature implements SignatureInterface {
 
+	const ALGORITHM = 'sha1';
+
 	public function makeHash($secret, $url, array $query = [])
 	{
+		$url = rtrim($url, '/');
+
 		ksort( $query ); // sort alphabetically
 
 		$fullUrl = empty($query) ? $url : $url . '?' . http_build_query($query);

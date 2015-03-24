@@ -10,7 +10,7 @@ class UnitHelper extends \Codeception\Module
 
 	public function mockHttpWithRequest($verb, $route, array $params, $returnData, $status = 'success')
 	{
-		$request = $this->makeRequestInterface();
+		$request = $this->makeRequestInterface($params);
 
 		$http = $this->makeHttp();
 	
@@ -29,9 +29,13 @@ class UnitHelper extends \Codeception\Module
 		return $http;
 	}
 
-	public function makeRequestInterface()
+	public function makeRequestInterface(array $params)
 	{
-		return Mockery::mock('GuzzleHttp\\Message\\RequestInterface');
+		$request = Mockery::mock('GuzzleHttp\\Message\\RequestInterface');
+		$request->shouldReceive('getQuery')->andReturn($params);
+		$request->shouldReceive('setQuery')->andReturn($request);
+
+		return $request;
 	}
 
 	public function makeResponseJsonString($status, $data)

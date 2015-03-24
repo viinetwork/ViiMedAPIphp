@@ -10,6 +10,8 @@ abstract class Gateway {
 
 	const API_VERSION = 'v2';
 
+	protected static $credentials = [];
+
 	protected $http;
 	
 	protected $route;
@@ -19,6 +21,16 @@ abstract class Gateway {
 		$this->http = $http;
 
 		$this->route = "api/" . static::API_VERSION . "/";
+	}
+
+	public static function setCredentials(array $credentials)
+	{
+		static::$credentials = $credentials;
+	}
+
+	public static function getCredentials()
+	{
+		return static::$credentials;
 	}
 
 	public function __call($method, $args)
@@ -38,6 +50,9 @@ abstract class Gateway {
 
 	protected function executeCall(RequestInterface $request)
 	{
+		// Add Token credentials
+		$this->decorateRequestQueryWithCredentials($request);
+
 		try
 		{
 			$this->response = json_decode($this->http->send( $request )->getBody()->getContents());
@@ -52,6 +67,17 @@ abstract class Gateway {
 		catch(RequestException $e) // Catch guzzle exception
 		{
 			throw new ViimedRequestException($e->getMessage(), $e->getCode(), $e);
+		}
+	}
+
+	protected function decorateRequestQueryWithCredentials(RequestInterface &$request)
+	{
+		// $query is still referenced and not needed to be passed back
+		// see http://guzzle.readthedocs.org/en/latest/http-messages.html
+		$query = $request->getQuery();
+		foreach(static::$credentials as $key => $value)
+		{
+			$query[$key] = $value;
 		}
 	}
 }

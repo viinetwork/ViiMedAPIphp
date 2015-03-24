@@ -1,7 +1,7 @@
 <?php namespace Viimed\PhpApi;
 
 
-class APITest extends \Codeception\TestCase\Test
+abstract class APITest extends \Codeception\TestCase\Test
 {
 	/**
 	 * @var \UnitTester

@@ -1,6 +1,7 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
 use GuzzleHttp\Client as Http;
+use GuzzleHttp\Message\RequestInterface;
 use Viimed\PhpApi\Interfaces\SignatureInterface;
 use Viimed\PhpApi\Interfaces\AuthServiceInterface;
 use Viimed\PhpApi\Exceptions\RequestException;
@@ -76,6 +77,17 @@ class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 		]);
 
 		return $this->executeCall( $request )->data;
+	}
+
+	/**
+	 * Override this method with NULL because not credentials have been received yet.  
+	 * That's the responsibility of this class.
+	 * @param  RequestInterface &$request
+	 * @return NULL
+	 */
+	protected function decorateRequestQueryWithCredentials(RequestInterface &$request)
+	{
+		return NULL;
 	}
 
 }
