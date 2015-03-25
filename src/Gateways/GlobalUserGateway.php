@@ -50,11 +50,14 @@ class GlobalUserGateway extends Gateway implements GlobalUserInterface, GlobalUs
 			if( is_null($identifier_name))
 				return $extID->source_name == $source_name;
 
-			return ($extID->source_name == $source_name) && ($extID->$identifier_name == $identifier_name);
+			return ($extID->source_name == $source_name) && ($extID->identifier_name == $identifier_name);
 		});
 
-		if( count($filtered) !== 1)
+		if( count($filtered) == 0)
 			throw new RequestException("ExternalID not found.");
+
+		if( count($filtered) > 1)
+			throw new RequestException("Multiple ExternalIDs were found.  Please provide the 'identifier_name'.");
 
 		return current($filtered)->value;
 	}

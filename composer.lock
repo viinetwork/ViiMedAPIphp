@@ -4,8 +4,48 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f07bcbccd55155ef413c20c988b19ef5",
+    "hash": "9cf04187a7c254039318245de3381f44",
     "packages": [
+        {
+            "name": "aaronbullard/exceptions",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aaronbullard/exceptions.git",
+                "reference": "aded166e2ee1e4a7c36f20f5861e8e0952a7ee6a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aaronbullard/exceptions/zipball/aded166e2ee1e4a7c36f20f5861e8e0952a7ee6a",
+                "reference": "aded166e2ee1e4a7c36f20f5861e8e0952a7ee6a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "codeception/codeception": "dev-master",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Aaronbullard\\Exceptions": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Aaron Bullard",
+                    "email": "JABullard@aol.com"
+                }
+            ],
+            "description": "abstract exception handler",
+            "support": {
+                "source": "https://github.com/aaronbullard/exceptions/tree/master",
+                "issues": "https://github.com/aaronbullard/exceptions/issues"
+            },
+            "time": "2015-03-20 17:20:35"
+        },
         {
             "name": "guzzlehttp/guzzle",
             "version": "4.2.3",
@@ -165,12 +205,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "0d84abe0dc4408e839a027022064d7eea8bd905b"
+                "reference": "30082dfa4c1c782005705a6be138e8a3786900b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/0d84abe0dc4408e839a027022064d7eea8bd905b",
-                "reference": "0d84abe0dc4408e839a027022064d7eea8bd905b",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/30082dfa4c1c782005705a6be138e8a3786900b0",
+                "reference": "30082dfa4c1c782005705a6be138e8a3786900b0",
                 "shasum": ""
             },
             "require": {
@@ -237,7 +277,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2015-03-24 03:56:45"
+            "time": "2015-03-25 02:44:59"
         },
         {
             "name": "doctrine/instantiator",
@@ -1682,6 +1722,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "viimed/contracts": 20,
+        "aaronbullard/exceptions": 20,
         "codeception/codeception": 20,
         "mockery/mockery": 20
     },

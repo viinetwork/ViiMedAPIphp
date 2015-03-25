@@ -64,19 +64,56 @@ class GlobalUserGatewayTest extends \Codeception\TestCase\Test
 			'externalIDs' => [
 				[
 					'source_name' => "one",
+					'identifier_name' => "oneTypeUser",
 					'value' => 1
 				],
 				[
 					'source_name' => "two",
+					'identifier_name' => "twoTypeUser",
 					'value' => 2
+				],
+				[
+					'source_name' => "three",
+					'identifier_name' => "threeTypeUser",
+					'value' => 3
+				],
+				[
+					'source_name' => "three",
+					'identifier_name' => "threeTypePatient",
+					'value' => 30
 				]
 			]
 		];
 
+		// works with only source
 		$http = $this->tester->mockHttpWithRequest('GET', $route, $params, $returnData);
-		
 		$idValue = (new GlobalUserGateway($http))->findExternalIDValue($globaluser_id, "two");
 		$this->assertEquals(2, $idValue);
+
+		// works with source AND identifier
+		$http = $this->tester->mockHttpWithRequest('GET', $route, $params, $returnData);
+		$idValue = (new GlobalUserGateway($http))->findExternalIDValue($globaluser_id, "two", "twoTypeUser");
+		$this->assertEquals(2, $idValue);
+
+		// works with source AND identifier where there are several for a source
+		$http = $this->tester->mockHttpWithRequest('GET', $route, $params, $returnData);
+		$idValue = (new GlobalUserGateway($http))->findExternalIDValue($globaluser_id, "three", "threeTypeUser");
+		$this->assertEquals(3, $idValue);
+
+		// throws exception where not found
+		$this->setExpectedException('Aaronbullard\\Exceptions\\BadRequestException', "ExternalID not found.");
+		$http = $this->tester->mockHttpWithRequest('GET', $route, $params, $returnData);
+		$idValue = (new GlobalUserGateway($http))->findExternalIDValue($globaluser_id, "two", "wrongIdentifier");
+
+		// throws exception when more than one identifier for a source
+		$this->setExpectedException('Aaronbullard\\Exceptions\\BadRequestException', "Multiple ExternalIDs were found.  Please provide the 'identifier_name'");
+		$http = $this->tester->mockHttpWithRequest('GET', $route, $params, $returnData);
+		$idValue = (new GlobalUserGateway($http))->findExternalIDValue($globaluser_id, "three");
+
+		// throws exception where not found
+		$this->setExpectedException('Aaronbullard\\Exceptions\\BadRequestException', "ExternalID not found.");
+		$http = $this->tester->mockHttpWithRequest('GET', $route, $params, $returnData);
+		$idValue = (new GlobalUserGateway($http))->findExternalIDValue($globaluser_id, "four");
 	}
 
 	public function testAddExternalID()
