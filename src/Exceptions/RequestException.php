@@ -1,5 +1,5 @@
 <?php namespace Viimed\PhpApi\Exceptions;
 
-use RuntimeException;
+use Aaronbullard\Exceptions\BadRequestException;
 
-class RequestException extends RuntimeException {}
+class RequestException extends BadRequestException {}
