@@ -2,10 +2,11 @@
 
 use Viimed\Contracts\Repositories\Repository;
 use Viimed\PhpApi\Interfaces\GlobalUserInterface;
+use Viimed\Contracts\Repositories\GlobalUsersRepository;
 use Viimed\PhpApi\Models\ExternalID;
 use Viimed\PhpApi\Exceptions\RequestException;
 
-class GlobalUserGateway extends Gateway implements GlobalUserInterface, Repository {
+class GlobalUserGateway extends Gateway implements GlobalUserInterface, GlobalUsersRepository, Repository {
 
 	public function findById($globaluser_id)
 	{
