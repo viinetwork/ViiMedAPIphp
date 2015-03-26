@@ -1,6 +1,6 @@
 <?php namespace Viimed\PhpApi\Services;
 
-use Viimed\PhpApi\Interfaces\SignatureInterface;
+use Viimed\Contracts\Services\SignatureInterface;
 
 class Signature implements SignatureInterface {
 

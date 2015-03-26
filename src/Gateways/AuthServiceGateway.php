@@ -2,8 +2,8 @@
 
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Message\RequestInterface;
-use Viimed\PhpApi\Interfaces\SignatureInterface;
-use Viimed\PhpApi\Interfaces\AuthServiceInterface;
+use Viimed\Contracts\Services\SignatureInterface;
+use Viimed\Contracts\Services\AuthServiceInterface;
 use Viimed\PhpApi\Exceptions\RequestException;
 use Viimed\PhpApi\Exceptions\InvalidTokenException;
 

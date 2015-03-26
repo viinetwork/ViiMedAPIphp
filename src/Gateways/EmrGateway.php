@@ -1,8 +1,8 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
-use Viimed\PhpApi\Interfaces\EmrInterface;
+use Viimed\Contracts\Repositories\EmrsRepository;
 
-class EmrGateway extends Gateway implements EmrInterface {
+class EmrGateway extends Gateway implements EmrsRepository {
 
 	public function findById($emr_id)
 	{

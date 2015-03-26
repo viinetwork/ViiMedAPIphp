@@ -25,7 +25,7 @@ class EmrGatewayTest extends \Codeception\TestCase\Test
 	// tests
 	public function testItImplementsEmrInterface()
 	{
-		$this->assertInstanceOf('Viimed\\PhpApi\\Interfaces\\EmrInterface', $this->gateway);
+		$this->assertInstanceOf('Viimed\\Contracts\\Repositories\\EmrsRepository', $this->gateway);
 	}
 
 	public function testFindById()

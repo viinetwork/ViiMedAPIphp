@@ -1,11 +1,12 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
 use DateTime;
+use Viimed\Contracts\Repositories\PatientsRepository;
 use Viimed\PhpApi\Interfaces\PatientInterface;
 use Viimed\PhpApi\Exceptions\RequestException;
 use Viimed\PhpApi\Models\Patient;
 
-class PatientGateway extends Gateway implements PatientInterface {
+class PatientGateway extends Gateway implements PatientInterface, PatientsRepository {
 
 	const DOB_FORMAT = 'Y-m-d';
 

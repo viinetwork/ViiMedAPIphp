@@ -170,12 +170,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:viinetwork/viimedcontracts.git",
-                "reference": "024d0d92eae8dbda4df6a14e75a103052179ea01"
+                "reference": "69a54aae1bb7ad68e51494b652626a0b61a7ece2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/viinetwork/viimedcontracts/zipball/024d0d92eae8dbda4df6a14e75a103052179ea01",
-                "reference": "024d0d92eae8dbda4df6a14e75a103052179ea01",
+                "url": "https://api.github.com/repos/viinetwork/viimedcontracts/zipball/69a54aae1bb7ad68e51494b652626a0b61a7ece2",
+                "reference": "69a54aae1bb7ad68e51494b652626a0b61a7ece2",
                 "shasum": ""
             },
             "type": "library",
@@ -192,10 +192,10 @@
             ],
             "description": "Shared interfaces for ViiMed services",
             "support": {
-                "source": "https://github.com/viinetwork/viimedcontracts/tree/develop",
+                "source": "https://github.com/viinetwork/viimedcontracts/tree/master",
                 "issues": "https://github.com/viinetwork/viimedcontracts/issues"
             },
-            "time": "2015-03-24 17:23:11"
+            "time": "2015-03-26 20:53:49"
         }
     ],
     "packages-dev": [
@@ -1399,12 +1399,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "de303b307151adadef2bbeff2858ac53d813e186"
+                "reference": "acc66bf5f1a851285b6fa0355d65a9a464adb59d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/de303b307151adadef2bbeff2858ac53d813e186",
-                "reference": "de303b307151adadef2bbeff2858ac53d813e186",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/acc66bf5f1a851285b6fa0355d65a9a464adb59d",
+                "reference": "acc66bf5f1a851285b6fa0355d65a9a464adb59d",
                 "shasum": ""
             },
             "require": {
@@ -1448,7 +1448,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2015-03-22 16:57:18"
+            "time": "2015-03-26 16:59:57"
         },
         {
             "name": "symfony/css-selector",

@@ -50,7 +50,7 @@ class UnitHelper extends \Codeception\Module
 
 	public function mockSignature($hash = NULL)
 	{
-		$sig = Mockery::mock('Viimed\\PhpApi\\Services\\Signature', 'Viimed\\PhpApi\\Interfaces\\SignatureInterface');
+		$sig = Mockery::mock('Viimed\\PhpApi\\Services\\Signature', 'Viimed\\Contracts\\Services\\SignatureInterface');
 
 		if( is_null($hash))
 		{

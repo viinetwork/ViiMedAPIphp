@@ -1,7 +1,7 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
 use Mockery;
-use Viimed\PhpApi\Interfaces\SignatureInterface;
+use Viimed\Contracts\Services\SignatureInterface;
 
 class AuthServiceGatewayTest extends \Codeception\TestCase\Test
 {
@@ -45,7 +45,7 @@ class AuthServiceGatewayTest extends \Codeception\TestCase\Test
 	// tests
 	public function testItImplementsAuthServiceInterface()
 	{
-		$this->assertInstanceOf('Viimed\\PhpApi\\Interfaces\\AuthServiceInterface', $this->gateway);
+		$this->assertInstanceOf('Viimed\\Contracts\\Services\\AuthServiceInterface', $this->gateway);
 	}
 
 	public function testGenerateToken()
