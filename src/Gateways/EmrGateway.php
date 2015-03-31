@@ -18,13 +18,7 @@ class EmrGateway extends Gateway implements EmrsRepository {
 		$params = [];
 		$route = $this->getRoute("emrs");
 
-		if( ! is_null($limit) || ! is_null($offset))
-		{
-			$query = [];
-			if( ! is_null($limit)) $query['limit'] = $limit;
-			if( ! is_null($offset)) $query['offset'] = $offset;
-			$params['query'] = $query;
-		}
+		static::decorateParams($params, $limit, $offset);
 
 		$request = $this->http->createRequest("GET", $route, $params);
 

@@ -1,5 +1,6 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
+use Exception;
 use BadMethodCallException;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Message\RequestInterface;
@@ -36,6 +37,16 @@ abstract class Gateway {
 		return $this->response;
 	}
 
+	public static function decorateParams(array &$params, $limit, $offset)
+	{
+		if( ! is_null($limit) || ! is_null($offset))
+		{
+			if( ! isset($params['query'])) $params['query'] = [];
+			if( ! is_null($limit)) $params['query']['limit'] = $limit;
+			if( ! is_null($offset)) $params['query']['offset'] = $offset;
+		}
+	}
+
 	protected function executeCall(RequestInterface $request)
 	{
 		try
@@ -50,6 +61,10 @@ abstract class Gateway {
 			return $this->response;
 		}
 		catch(RequestException $e) // Catch guzzle exception
+		{
+			throw new ViimedRequestException($e->getMessage(), $e->getCode(), $e);
+		}
+		catch(Exception $e) // Catch anything else
 		{
 			throw new ViimedRequestException($e->getMessage(), $e->getCode(), $e);
 		}
