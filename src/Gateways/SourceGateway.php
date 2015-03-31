@@ -54,6 +54,26 @@ class SourceGateway extends Gateway  {
 		return $this->executeCall( $request )->data;
 	}
 
+	public function saveSource($name, $description = NULL)
+	{
+		$params = [];
+		$params['body'] = [
+			'Name' => $name,
+			'Description' => $description
+		];
+
+		$route = $this->getRoute("sources/{$sourceId}");
+
+		$request = $this->http->createRequest("POST", $route, $params);
+
+		return $this->executeCall( $request )->data;
+	}
+
+
+	#################
+	# Identifiers
+	#################
+
 	public function findIdentifierByName($sourceName, $identifierName)
 	{
 		$source = $this->findSourceByName($sourceName);
@@ -65,6 +85,21 @@ class SourceGateway extends Gateway  {
 		}
 
 		throw new RequestException("Source Identifier not found.");
+	}
+
+	public function saveIdentifier($sourceId, $name, $description)
+	{
+		$params = [];
+		$params['body'] = [
+			'Name' => $name,
+			'Description' => $description
+		];
+
+		$route = $this->getRoute("sources/{$sourceId}/identifiers");
+
+		$request = $this->http->createRequest("POST", $route, $params);
+
+		return $this->executeCall( $request )->data;
 	}
 
 	
