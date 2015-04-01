@@ -37,6 +37,11 @@ abstract class Gateway {
 		return $this->response;
 	}
 
+	public function getMetaArray()
+	{
+		return $this->getResponseBody()->meta;
+	}
+
 	public static function decorateParams(array &$params, $limit, $offset)
 	{
 		if( ! is_null($limit) || ! is_null($offset))

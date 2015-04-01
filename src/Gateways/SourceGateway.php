@@ -1,8 +1,9 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
+use Viimed\Contracts\Repositories\SourcesRepository;
 use Viimed\PhpApi\Exceptions\RequestException;
 
-class SourceGateway extends Gateway  {
+class SourceGateway extends Gateway implements SourcesRepository  {
 
 	public function findById($sourceId)
 	{
@@ -102,5 +103,37 @@ class SourceGateway extends Gateway  {
 		return $this->executeCall( $request )->data;
 	}
 
+	#################
+	# ExternalIDs
+	#################
+
+	public function getExternalIDs($sourceId, $identifierId, $limit = NULL, $offset = NULL)
+	{
+		$params = [];
+
+		static::decorateParams($params, $limit, $offset);
+
+		$route = $this->getRoute("sources/{$sourceId}/identifiers/{$identifierId}/externalids");
+
+		$request = $this->http->createRequest("GET", $route, $params);
+
+		return $this->executeCall( $request )->data;
+	}
+
+	public function findExternalIDByValue($sourceName, $identifierName, $value)
+	{
+		$params = [];
+		$params['query'] = [
+			'value' => $value
+		];
+
+		$identifier = $this->findIdentifierByName($sourceName, $identifierName);
+
+		$route = $this->getRoute("sources/{$identifier->source_id}/identifiers/{$identifier->id}/externalids");
+
+		$request = $this->http->createRequest("GET", $route, $params);
+
+		return $this->executeCall( $request )->data;
+	}
 	
 }

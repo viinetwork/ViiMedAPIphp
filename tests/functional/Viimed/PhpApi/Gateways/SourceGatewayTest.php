@@ -5,7 +5,7 @@ use Viimed\PhpApi\API;
 
 // This test needs to have some known data on the viiidservice
 
-abstract class SourceGatewayTest extends \Codeception\TestCase\Test
+class SourceGatewayTest extends \Codeception\TestCase\Test
 {
 	/**
 	 * @var \FunctionalTester
@@ -25,22 +25,45 @@ abstract class SourceGatewayTest extends \Codeception\TestCase\Test
 	{
 		$sources = $this->_gateway->getAll();
 
-		$this->assertCount(20, $sources);
+		$count = $this->_gateway->getMetaArray()->total;
+
+		$this->assertCount($count, $sources);
 		$this->assertTrue( isset($sources[0]->identifiers) );
+
+		return $sources;
 	}
 
 	public function testFindSourceByName()
 	{
-		$source = $this->_gateway->findSourceByName('ViimedSiteFAKE');
+		$sources = $this->testGetAll();
 
-		$this->assertEquals("Fake Viimed Site.", $source->description);
+		$source = $this->_gateway->findSourceByName($sources[0]->name);
+
+		$this->assertEquals($sources[0]->description, $source->description);
 	}
 
 	public function testFindIdentifierByName()
 	{
-		$identifier = $this->_gateway->findIdentifierByName('Goodwin Ltd', 'aut');
+		$sources = $this->testGetAll();
 
-		$this->assertEquals(2, $identifier->id);
+		$identifier = $this->_gateway->findIdentifierByName($sources[0]->name, $sources[0]->identifiers[0]->name);
+
+		$this->assertEquals($sources[0]->identifiers[0]->id, $identifier->id);
+	}
+
+	public function testFindExternalIDByValue()
+	{
+		$sources = $this->testGetAll();
+
+		$source = $sources[0];
+		$identifier = $sources[0]->identifiers[0];
+
+		$externalIDs = $this->_gateway->getExternalIDs($source->id, $identifier->id);
+		$value = $externalIDs[0]->value;
+
+		$externalID = $this->_gateway->findExternalIDByValue($source->name, $identifier->name, $value);
+
+		$this->assertEquals($value, $externalID->value);
 	}
 
 }
