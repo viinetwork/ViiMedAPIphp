@@ -15,7 +15,7 @@ class API {
 
 	private function __construct(){}
 
-	public static function connect()
+	public static function connect($ViiPartnerID, $ViiPartnerSecret, $ViiClientID, $Identifier, $IdentifierID)
 	{
 		$manager = new GatewayManager;
 
@@ -26,13 +26,30 @@ class API {
 		$manager->setGateway(
 			new AuthServiceGateway($authserviceHttp, new Signature)
 		);
+		$manager->authServices()->setCredentials($ViiPartnerID, $ViiPartnerSecret, $ViiClientID);
+
+		// Create token
+		$token = $manager->authServices()->generateToken($Identifier, $IdentifierID);
+
+		// Create
+		$httpConfig = [
+			'base_url' => $config['base_urls']['globaluser'],
+			'defaults' => [
+				'query' => [
+					'ViiPartnerID' => $ViiPartnerID,
+					'ViiClientID' => $ViiClientID,
+					'Identifier' => $Identifier,
+					'IdentifierID' => $IdentifierID,
+					'Token' => $token
+				]
+			]
+		];
 
 		// Globalusers, Patients, Emrs
-		$globaluserHttp = new Http(['base_url' => $config['base_urls']['globaluser']]);
-		$manager->setGateway( new GlobalUserGateway($globaluserHttp) )
-				->setGateway( new PatientGateway($globaluserHttp) )
-				->setGateway( new EmrGateway($globaluserHttp) )
-				->setGateway( new SourceGateway($globaluserHttp) );
+		$manager->setGateway( new GlobalUserGateway( new Http($httpConfig)) )
+				->setGateway( new PatientGateway( new Http($httpConfig)) )
+				->setGateway( new EmrGateway( new Http($httpConfig)) )
+				->setGateway( new SourceGateway( new Http($httpConfig)) );
 
 		return $manager;
 	}
