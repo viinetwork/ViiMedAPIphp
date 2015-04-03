@@ -1,9 +1,12 @@
 <?php
 
+// Guzzle\Client constructor configurations...
 return [
-	'base_urls' => [
-		'authservice' => 'https://gwn-demo.viinetwork.net/',
-		// 'globaluser' => 'http://viiidservice.app:80/'
-		'globaluser' => 'https://gwn-demo.viinetwork.net/'
+	'authtokens' => [
+		'base_url' => ['https://himss.viinetwork.net/api/{version}/authtokens', ['version' => 'v2']]
+	],
+
+	'viiid' => [
+		'base_url' => ['https://himss.viinetwork.net/api/{version}/viiid', ['version' => 'v2']]
 	]
 ];

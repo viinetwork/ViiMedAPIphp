@@ -12,7 +12,7 @@ class APITest extends \Codeception\TestCase\Test
 
 	protected function _before()
 	{
-		$this->_manager = API::connect('VIIMED_1', '39dc4799819eb3632e3e20d72955d14f', 'DEVELOPR', 'GetWellUser', 42);
+		$this->_manager = $this->tester->getAPI();
 	}
 
 	public function testFactoryGivesInstanceOfGateway()
@@ -25,6 +25,15 @@ class APITest extends \Codeception\TestCase\Test
 		$token = $this->_manager->authServices()->generateToken('GetWellUser', 42);
 
 		$this->assertEquals(32, strlen($token));
+	}
+
+	public function testVerifingToken()
+	{
+		$token = $this->_manager->authServices()->generateToken('GetWellUser', 42);
+
+		$bool = $this->_manager->authServices()->validateToken($token, 'GetWellUser', 42);
+
+		$this->assertTrue($bool);
 	}
 
 	// public function testItAppendsCredentialsToQuerys()

@@ -8,9 +8,9 @@ use Viimed\PhpApi\API;
 class FunctionalHelper extends \Codeception\Module
 {
 
-	public function getAPI()
+	public function getAPI($Identifier = 'GetWellUser', $IdentifierID = 42)
 	{
-		return API::connect();
+		return API::connect('VIIMED_1', '39dc4799819eb3632e3e20d72955d14f', 'DEVELOPR', $Identifier, $IdentifierID);
 	}
 
 	public function getGlobalUserInterface()

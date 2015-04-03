@@ -1,7 +1,7 @@
 <?php namespace Viimed\PhpApi;
 
 
-class APITest extends \Codeception\TestCase\Test
+class APIUnitTest extends \Codeception\TestCase\Test
 {
 	/**
 	 * @var \UnitTester
@@ -18,7 +18,7 @@ class APITest extends \Codeception\TestCase\Test
 		$config = API::getConfig();
 
 		$this->assertTrue( is_array($config) );
-		$this->assertTrue( isset($config['base_urls']));
+		$this->assertTrue( isset($config['viiid']));
 	}
 
 	// public function testConnectReturnsGatewayManager()

@@ -30,7 +30,8 @@ class EmrGatewayTest extends \Codeception\TestCase\Test
 
 	public function testFindById()
 	{
-		$route = 'api/v2/emrs/1';
+		$route = 'http://localhost/api/v2/emrs/1';
+		$route = 'http://localhost/api/v2';
 		$params = [];
 		$returnData = TRUE;
 

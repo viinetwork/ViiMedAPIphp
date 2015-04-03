@@ -43,10 +43,11 @@ class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 			static::DATE_KEY => date(static::DATE_FORMAT)
 		];
 
-		$url = rtrim($this->http->getBaseUrl(), '/') . "/" .  $this->getRoute("authtokens");
+		$url = rtrim($this->http->getBaseUrl(), '/');
+
 		$params['Hash'] = $this->hasher->makeHash($this->ViiPartnerSecret, $url, $params );
 
-		$request = $this->http->createRequest('POST', $this->getRoute("authtokens"), [
+		$request = $this->http->createRequest('POST', $this->getRoute(), [
 			'body'	=> $params
 		]);
 
@@ -59,7 +60,7 @@ class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 		$params['ViiPartnerID'] = $this->ViiPartnerID;
 		$params['ViiClientID'] = $this->ViiClientID;
 
-		$request = $this->http->createRequest('GET', $this->getRoute("authtokens"), [
+		$request = $this->http->createRequest('GET', $this->getRoute(), [
 			'query'	=> $params
 		]);
 
@@ -78,7 +79,7 @@ class AuthServiceGateway extends Gateway implements AuthServiceInterface {
 		$params['ViiPartnerID'] = $this->ViiPartnerID;
 		$params['ViiClientID'] = $this->ViiClientID;
 
-		$request = $this->http->createRequest("DELETE", $this->getRoute("authtokens"), [
+		$request = $this->http->createRequest("DELETE", $this->getRoute(), [
 			'body'	=> $params
 		]);
 

@@ -1,11 +1,10 @@
-<?php
-namespace Viimed\PhpApi\Gateways;
+<?php namespace Viimed\PhpApi\Gateways;
 
 use Viimed\PhpApi\API;
 
 // This test needs to have some known data on the viiidservice
 
-class SourceGatewayTest extends \Codeception\TestCase\Test
+class SourceGatewayTest extends \FunctionalTest
 {
 	/**
 	 * @var \FunctionalTester
@@ -16,7 +15,7 @@ class SourceGatewayTest extends \Codeception\TestCase\Test
 
 	protected function _before()
 	{
-		$this->_gateway = API::connect()->sources();
+		$this->_gateway = $this->tester->getAPI()->sources();
 	}
 
 
@@ -25,7 +24,8 @@ class SourceGatewayTest extends \Codeception\TestCase\Test
 	{
 		$sources = $this->_gateway->getAll();
 
-		$count = $this->_gateway->getMetaArray()->total;
+		$meta = $this->_gateway->getMetaArray();
+		$count = min($meta->limit, $meta->total);
 
 		$this->assertCount($count, $sources);
 		$this->assertTrue( isset($sources[0]->identifiers) );

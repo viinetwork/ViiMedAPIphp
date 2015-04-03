@@ -52,7 +52,7 @@ class AuthServiceGatewayTest extends \Codeception\TestCase\Test
 	{
 		$Identifier = 'User';
 		$IdentifierID = 42;
-		$route = 'api/v2/authtokens';
+		$route = 'http://localhost/api/v2/authtokens';
 		$returnData = "myHash";
 		$params = [
 			'body' => [
@@ -66,7 +66,7 @@ class AuthServiceGatewayTest extends \Codeception\TestCase\Test
 		];
 
 		$http = $this->tester->mockHttpWithRequest('POST', $route, $params, $returnData);
-		$http->shouldReceive('getBaseUrl')->andReturn('http://localhost');
+		$http->shouldReceive('getBaseUrl')->andReturn($route);
 
 		$sig = $this->tester->mockSignature($returnData);
 
@@ -81,7 +81,7 @@ class AuthServiceGatewayTest extends \Codeception\TestCase\Test
 	{
 		$Identifier = 'User';
 		$IdentifierID = 42;
-		$route = 'api/v2/authtokens';
+		$route = 'http://localhost/api/v2/authtokens';
 		$returnData = TRUE;
 		$Token = "1234";
 		$params = [

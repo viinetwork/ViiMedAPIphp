@@ -9,17 +9,11 @@ use Viimed\PhpApi\Exceptions\RequestException as ViimedRequestException;
 
 abstract class Gateway {
 
-	const API_VERSION = 'v2';
-
 	protected $http;
-	
-	protected $route;
 
 	public function __construct(Http $http)
 	{
 		$this->http = $http;
-
-		$this->route = "api/" . static::API_VERSION . "/";
 	}
 
 	public function __call($method, $args)
@@ -27,9 +21,16 @@ abstract class Gateway {
 		throw new BadMethodCallException(get_called_class() . "::" . $method . "() does not exist.");
 	}
 
-	public function getRoute($resource)
+	public function getRoute($resource = '')
 	{
-		return rtrim($this->route . trim($resource, '/'), '/');
+		$baseUrl = rtrim($this->http->getBaseUrl(), '/');
+
+		$resource = trim($resource, '/');
+
+		if( $resource === '' )
+			return $baseUrl;
+
+		return $baseUrl . '/' . $resource;
 	}
 
 	public function getResponseBody()

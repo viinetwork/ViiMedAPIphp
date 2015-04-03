@@ -1,7 +1,7 @@
 <?php namespace Viimed\PhpApi\Interfaces;
 
 
-class GlobalUserInterfaceTest extends \Codeception\TestCase\Test
+class GlobalUserInterfaceTest extends \FunctionalTest
 {
 	/**
 	 * @var \FunctionalTester
@@ -18,6 +18,30 @@ class GlobalUserInterfaceTest extends \Codeception\TestCase\Test
 	public function testGetAll()
 	{
 		$globalUsers = $this->repo->getAll();
+
+		$meta = $this->repo->getMetaArray();
+
+		$count = min($meta->limit, $meta->total);
+
+		$this->assertEquals($count, count($globalUsers));
+
+		foreach($globalUsers as $guser)
+		{
+			$this->assertFieldsExistOnObject($guser, ['id', 'externalIDs']);
+		}
+
+		return $globalUsers;
+	}
+
+	public function testFindById()
+	{
+		$globalUsers = $this->testGetAll();
+
+		$guser = $globalUsers[0];
+
+		$globaluser = $this->repo->findById($guser->id);
+
+		$this->assertEquals($guser->id, $globaluser->id);
 	}
 
 }

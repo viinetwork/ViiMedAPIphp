@@ -1,6 +1,7 @@
 <?php namespace Codeception\Module;
 
 use Mockery;
+use Viimed\PhpApi\API;
 
 // here you can define custom actions
 // all public methods declared in helper class will be available in $I
@@ -15,6 +16,7 @@ class UnitHelper extends \Codeception\Module
 		$http = $this->makeHttp();
 	
 		$http->shouldReceive('createRequest')->with($verb, $route, $params)->once()->andReturn( $request );
+		$http->shouldReceive('getBaseUrl')->once()->andReturn($route);
 		$http->shouldReceive('send')->with( $request )->once()->andReturn($http)
 			->shouldReceive('getBody')->once()->andReturn( $http )
 			->shouldReceive('getContents')->once()->andReturn( $this->makeResponseJsonString('success', $returnData) );

@@ -17,39 +17,60 @@ class API {
 
 	public static function connect($ViiPartnerID, $ViiPartnerSecret, $ViiClientID, $Identifier, $IdentifierID)
 	{
+		$manager = static::constructGatewayManagerWithAuthService($ViiPartnerID, $ViiPartnerSecret, $ViiClientID);
+
+		// Create token
+		$Token = $manager->authServices()->generateToken($Identifier, $IdentifierID);
+
+		// Create
+		$credentials = compact('ViiPartnerID', 'ViiClientID', 'Identifier', 'IdentifierID', 'Token');
+
+		$manager = static::setGateways($manager, $credentials);
+
+		return $manager;
+	}
+
+	public static function connectWithToken($ViiPartnerID, $ViiClientID, $Identifier, $IdentifierID, $Token)
+	{
+		$manager = static::constructGatewayManagerWithAuthService($ViiPartnerID, $ViiPartnerSecret, $ViiClientID);
+
+		// Create
+		$credentials = compact('ViiPartnerID', 'ViiClientID', 'Identifier', 'IdentifierID', 'Token');
+
+		$manager = static::setGateways($manager, $credentials);
+
+		return $manager;
+	}
+
+	private static function constructGatewayManagerWithAuthService($ViiPartnerID, $ViiPartnerSecret, $ViiClientID)
+	{
 		$manager = new GatewayManager;
 
 		$config = static::getConfig();
 
 		// Authservice
-		$authserviceHttp = new Http(['base_url' => $config['base_urls']['authservice']]);
 		$manager->setGateway(
-			new AuthServiceGateway($authserviceHttp, new Signature)
+			new AuthServiceGateway(new Http($config['authtokens']), new Signature)
 		);
 		$manager->authServices()->setCredentials($ViiPartnerID, $ViiPartnerSecret, $ViiClientID);
 
-		// Create token
-		$token = $manager->authServices()->generateToken($Identifier, $IdentifierID);
+		return $manager;
+	}
+
+	private static function setGateways(GatewayManager $manager, array $credentials = [])
+	{
+		$config = static::getConfig();
 
 		// Create
-		$httpConfig = [
-			'base_url' => $config['base_urls']['globaluser'],
-			'defaults' => [
-				'query' => [
-					'ViiPartnerID' => $ViiPartnerID,
-					'ViiClientID' => $ViiClientID,
-					'Identifier' => $Identifier,
-					'IdentifierID' => $IdentifierID,
-					'Token' => $token
-				]
-			]
+		$config['viiid']['defaults'] = [
+			'query' => $credentials
 		];
 
 		// Globalusers, Patients, Emrs
-		$manager->setGateway( new GlobalUserGateway( new Http($httpConfig)) )
-				->setGateway( new PatientGateway( new Http($httpConfig)) )
-				->setGateway( new EmrGateway( new Http($httpConfig)) )
-				->setGateway( new SourceGateway( new Http($httpConfig)) );
+		$manager->setGateway( new GlobalUserGateway( new Http($config['viiid'])) )
+				->setGateway( new PatientGateway( new Http($config['viiid'])) )
+				->setGateway( new EmrGateway( new Http($config['viiid'])) )
+				->setGateway( new SourceGateway( new Http($config['viiid'])) );
 
 		return $manager;
 	}
