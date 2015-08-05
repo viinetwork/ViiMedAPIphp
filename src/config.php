@@ -8,5 +8,9 @@ return [
 
 	'viiid' => [
 		'base_url' => ['https://himss.viinetwork.net/api/{version}/viiid', ['version' => 'v2']]
-	]
+	],
+
+	'schemas' => [
+			'base_url' => ['https://qa3.viinetwork.net/api/{version}', ['version' => 'v2']]
+	],
 ];
