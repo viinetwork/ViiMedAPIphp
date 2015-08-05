@@ -11,6 +11,6 @@ return [
 	],
 
 	'schemas' => [
-			'base_url' => ['https://qa3.viinetwork.net/api/{version}', ['version' => 'v2']]
+			'base_url' => ['https://localqa.viinetwork.net/api/{version}', ['version' => 'v2']]
 	],
 ];
