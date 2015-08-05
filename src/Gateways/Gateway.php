@@ -59,7 +59,7 @@ abstract class Gateway {
 		{
 			$this->response = json_decode($this->http->send( $request )->getBody()->getContents());
 
-			if( $this->response->status === 'error')
+			if(property_exists($this->response, 'status') && $this->response->status === 'error')
 			{
 				throw new ViimedRequestException($this->response->errors->message);
 			}
