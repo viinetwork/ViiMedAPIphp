@@ -11,6 +11,6 @@ return [
 	],
 
 	'schemas' => [
-			'base_url' => ['https://localqa.viinetwork.net/api/{version}', ['version' => 'v2']]
+			'base_url' => [sprintf('https://%s/api/{version}', getenv('MCP_DOMAIN')), ['version' => 'v2']]
 	],
 ];
