@@ -11,9 +11,9 @@ class SchemaGateway extends Gateway implements SchemaInterface {
 	{
 		$route = $this->getRoute("records/$uuid");
 
- 	   $request = $this->http->createRequest("GET", $route, []);
+		$request = $this->http->createRequest("GET", $route, []);
 
- 	   return $this->executeCall( $request )->data;
+		return $this->executeCall( $request )->data;
 	}
 
 
@@ -21,13 +21,13 @@ class SchemaGateway extends Gateway implements SchemaInterface {
 	{
 		$schemaAddress = ltrim($schemaAddress, '/');
 
-	   $route = $this->getRoute("records/$schemaAddress");
+		$route = $this->getRoute("records/$schemaAddress");
 
-	   $request = $this->http->createRequest("POST", $route, [
-		   'json' => (array) $record
-	   ]);
+		$request = $this->http->createRequest("POST", $route, [
+			'json' => (array) $record
+		]);
 
-	   return $this->executeCall( $request )->data;
+		return $this->executeCall( $request )->data;
 	}
 
 
@@ -39,11 +39,11 @@ class SchemaGateway extends Gateway implements SchemaInterface {
 
 		$route = $this->getRoute("records/$uuid");
 
- 	   $request = $this->http->createRequest("PUT", $route, [
- 		   'json' => (array) $record
- 	   ]);
+		$request = $this->http->createRequest("PUT", $route, [
+			'json' => (array) $record
+		]);
 
- 	   return $this->executeCall( $request )->data;
+		return $this->executeCall( $request )->data;
 	}
 
 
@@ -58,6 +58,18 @@ class SchemaGateway extends Gateway implements SchemaInterface {
  	   $request = $this->http->createRequest("DELETE", $route, []);
 
  	   return $this->executeCall( $request )->data;
+	}
+
+
+	public function saveRecordMeta($uuid, StdClass $meta)
+	{
+		$route = $this->getRoute("records/$uuid/meta");
+
+		$request = $this->http->createRequest("POST", $route, [
+			'json' => (array) $record
+		]);
+
+		return $this->executeCall( $request )->data;
 	}
 
 
