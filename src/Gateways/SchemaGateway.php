@@ -66,7 +66,7 @@ class SchemaGateway extends Gateway implements SchemaInterface {
 		$route = $this->getRoute("records/$uuid/meta");
 
 		$request = $this->http->createRequest("POST", $route, [
-			'json' => (array) $record
+			'json' => (array) $meta
 		]);
 
 		return $this->executeCall( $request )->data;
