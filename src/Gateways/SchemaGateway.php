@@ -75,7 +75,7 @@ class SchemaGateway extends Gateway implements SchemaInterface {
 
 	public function searchRecordsBySchema($schemaAddress, StdClass $params)
 	{
-		$this->getRoute("records/$schemaAddress/search");
+		$route = $this->getRoute("records/$schemaAddress/search");
 
 		$request = $this->http->createRequest("POST", $route, [
 			'json' => $params,
