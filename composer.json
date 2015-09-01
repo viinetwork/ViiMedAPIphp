@@ -1,7 +1,7 @@
 {
     "name": "viimed/api-php",
     "description": "ViiMed API Adapter for PHP",
-    "version": "3.3.0",
+    "version": "3.3.1",
     "authors": [
         {
             "name": "Aaron Bullard",
