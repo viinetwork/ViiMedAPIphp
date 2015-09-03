@@ -8,5 +8,5 @@ interface SchemaInterface {
 	public function updateRecord(StdClass $record);
 	public function deleteRecord(StdClass $record);
     public function saveRecordMeta($uuid, StdClass $meta);
-    public function searchRecordsBySchema($schemaAddress, StdClass $params);
+    public function getRecordsBySchema($schemaAddress, Array $params = []);
 }
