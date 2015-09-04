@@ -93,4 +93,23 @@ class SchemaGateway extends Gateway implements SchemaInterface {
 		}
 	}
 
+	public function getSchema($schemaAddress) {
+        $schemaAddress = ltrim($schemaAddress,'/');
+        $route = $this->getRoute($schemaAddress);
+        $request = $this->http->createRequest('GET', $route, []);
+
+        return $this->executeCall( $request )->data;
+    }
+
+    public function getRecords(Array $params = [])
+    {
+    	$route = $this->getRoute("records");
+
+		$request = $this->http->createRequest("GET", $route, [
+			'query' => $params,
+		]);
+
+		return $this->executeCall( $request )->data;
+    }
+
 }
