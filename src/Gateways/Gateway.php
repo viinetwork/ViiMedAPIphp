@@ -55,6 +55,11 @@ abstract class Gateway {
 
 	protected function executeCall(RequestInterface $request)
 	{
+		// quick fix to get the domain into a header. sorry Aaron.
+		$domain = $_SERVER['HTTP_HOST'];
+		$domain = preg_replace('/:\d+$/', '', $domain);
+		$request->addHeader('X-DOMAIN', $domain);
+
 		try
 		{
 			$this->response = json_decode($this->http->send( $request )->getBody()->getContents());
