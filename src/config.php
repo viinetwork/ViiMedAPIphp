@@ -3,14 +3,14 @@
 // Guzzle\Client constructor configurations...
 return [
 	'authtokens' => [
-		'base_url' => ['https://himss.viinetwork.net/api/{version}/authtokens', ['version' => 'v2']]
+		'base_url' => ['https://localhost.viinetwork.net/api/{version}/authtokens', ['version' => 'v2']]
 	],
 
 	'viiid' => [
-		'base_url' => ['https://himss.viinetwork.net/api/{version}/viiid', ['version' => 'v2']]
+		'base_url' => ['https://localhost.viinetwork.net/api/{version}/viiid', ['version' => 'v2']]
 	],
 
 	'schemas' => [
-			'base_url' => [sprintf('https://%s/api/{version}', getenv('MCP_DOMAIN')), ['version' => 'v2']]
+		'base_url' => ['https://localhost.viinetwork.net/api/{version}', ['version' => 'v2']]
 	],
 ];
