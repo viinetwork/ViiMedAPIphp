@@ -56,8 +56,12 @@ abstract class Gateway {
 	protected function executeCall(RequestInterface $request)
 	{
 		// quick fix to get the domain into a header. sorry Aaron.
-		$domain = $_SERVER['HTTP_HOST'];
-		$domain = preg_replace('/:\d+$/', '', $domain);
+		if ($site = \RequestLogger::$site) {
+			$domain = $site->domain;
+		} else {
+			$domain = $_SERVER['HTTP_HOST'];
+			$domain = preg_replace('/:\d+$/', '', $domain);
+		}		
 		$request->addHeader('X-DOMAIN', $domain);
 
 		try
