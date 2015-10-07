@@ -1,4 +1,5 @@
 <?php
+namespace Viimed\PhpApi\Gateways;
 
 use Viimed\PhpApi\Interfaces\IdentityInterface;
 
