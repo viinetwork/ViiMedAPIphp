@@ -19,7 +19,7 @@ class IdentityGateway extends Gateway implements IdentityInterface
 
 		$request = $this->http->createRequest("POST", $route, ['json' => $payload]);
 
-		return $this->executeCall( $request );
+		return $this->executeCall( $request )->data;
 	}
     
     public function findIdentity($system_name, $system_id)
@@ -28,6 +28,6 @@ class IdentityGateway extends Gateway implements IdentityInterface
 
 		$request = $this->http->createRequest("GET", $route, []);
 
-		return $this->executeCall( $request );
+		return $this->executeCall( $request )->data;
     }
 }
