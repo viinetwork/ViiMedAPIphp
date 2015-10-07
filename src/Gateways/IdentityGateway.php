@@ -6,7 +6,7 @@ class IdentityGateway extends Gateway implements IdentityInterface
 {
 	public function registerIdentity($system_name, $system_id, Array $traits)
 	{
-		$route = $this->getRoute("identity/register");
+		$route = $this->getRoute("register");
 
 		$payload = [
 			'system' => [
@@ -23,7 +23,7 @@ class IdentityGateway extends Gateway implements IdentityInterface
     
     public function findIdentity($system_name, $system_id)
     {
-		$route = $this->getRoute("identity/find/$system_name/$system_id");
+		$route = $this->getRoute("find/$system_name/$system_id");
 
 		$request = $this->http->createRequest("GET", $route, []);
 

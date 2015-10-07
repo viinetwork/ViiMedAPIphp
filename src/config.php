@@ -13,4 +13,8 @@ return [
 	'schemas' => [
 		'base_url' => ['https://localhost.viinetwork.net/api/{version}', ['version' => 'v2']]
 	],
+
+	'identity' => [
+		'base_url' => ['https://localhost.viinetwork.net/api/{version}/identity', ['version' => 'v2']]
+	],
 ];
