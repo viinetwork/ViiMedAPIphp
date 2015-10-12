@@ -53,7 +53,7 @@ abstract class Gateway {
 		}
 	}
 
-	protected function executeCall(RequestInterface $request)
+	protected function executeCall(RequestInterface $request, $expectJson = true)
 	{
 		// quick fix to get the domain into a header. sorry Aaron.
 		if ($site = \RequestLogger::$site) {
@@ -61,26 +61,26 @@ abstract class Gateway {
 		} else {
 			$domain = $_SERVER['HTTP_HOST'];
 			$domain = preg_replace('/:\d+$/', '', $domain);
-		}		
+		}
 		$request->addHeader('X-DOMAIN', $domain);
 
-		try
-		{
-			$this->response = json_decode($this->http->send( $request )->getBody()->getContents());
+		try {
+			$this->response = $this->http->send( $request )->getBody()->getContents();
 
-			if(property_exists($this->response, 'status') && $this->response->status === 'error')
-			{
-				throw new ViimedRequestException($this->response->errors->message);
+			if ($expectJson) {
+				$this->response = json_decode($this->response);
+
+				if (property_exists($this->response, 'status') && $this->response->status === 'error') {
+					throw new ViimedRequestException($this->response->errors->message);
+				}
 			}
 
 			return $this->response;
-		}
-		catch(RequestException $e) // Catch guzzle exception
-		{
+		} catch(RequestException $e) {
+			// Catch guzzle exception
 			throw new ViimedRequestException($e->getMessage(), $e->getCode(), $e);
-		}
-		catch(Exception $e) // Catch anything else
-		{
+		} catch(Exception $e) {
+			// Catch anything else
 			throw new ViimedRequestException($e->getMessage(), $e->getCode(), $e);
 		}
 	}
