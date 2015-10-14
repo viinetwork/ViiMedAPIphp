@@ -1,9 +1,22 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
+use GuzzleHttp\Client as Http;
+use Laravel\Input;
+use Laravel\Request;
+use Laravel\Response;
 use Viimed\PhpApi\Interfaces\SamlInterface;
+use ViiSetting;
 
 class SamlGateway extends Gateway implements SamlInterface
 {
+  public function __construct(Http $http)
+  {
+    $http->setDefaultOption('allow_redirects', false);
+
+    $this->settings = ViiSetting::load_setting('sso');
+    $this->http = $http;
+  }
+
   public function metadata()
   {
     $route = $this->getRoute('/metadata');
@@ -14,13 +27,12 @@ class SamlGateway extends Gateway implements SamlInterface
   }
 
   public function login()
-
   {
     $route = $this->getRoute('/login');
 
     $request = $this->http->createRequest('GET', $route, []);
 
-    return $this->executeCall($request, $expectJson = false);
+    return $this->executeCall($request, $expectJson = false, $expectRedirect = true);
   }
 
   public function logout()
@@ -29,7 +41,7 @@ class SamlGateway extends Gateway implements SamlInterface
 
     $request = $this->http->createRequest('GET', $route, []);
 
-    return $this->executeCall($request, $expectJson = false);
+    return $this->executeCall($request, $expectJson = false, $expectRedirect = true);
   }
 
   public function acs()
@@ -37,7 +49,7 @@ class SamlGateway extends Gateway implements SamlInterface
     $route = $this->getRoute('/acs');
 
     $request = $this->http->createRequest('POST', $route, [
-        'form_params' => [Input::all()]
+        'body' => [Input::all()]
     ]);
 
     return $this->executeCall($request, $expectJson = false);
@@ -49,6 +61,6 @@ class SamlGateway extends Gateway implements SamlInterface
 
     $request = $this->http->createRequest('GET', $route, []);
 
-    return $this->executeCall($request, $expectJson = false);
+    return $this->executeCall($request, $expectJson = false, $expectRedirect = true);
   }
 }
