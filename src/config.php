@@ -17,4 +17,9 @@ return [
 	'identity' => [
 		'base_url' => ['https://localhost.viinetwork.net/api/{version}/identity', ['version' => 'v2']]
 	],
+
+  'saml' => [
+    'base_url' => ['https://localhost.viinetwork.net/api/{version}/{prefix}', ['version' => 'v2', 'prefix' => 'sso']]
+  ],
+
 ];

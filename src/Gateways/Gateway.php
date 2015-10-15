@@ -5,6 +5,8 @@ use BadMethodCallException;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Message\Response;
+use Laravel\Redirect;
 use Viimed\PhpApi\Exceptions\RequestException as ViimedRequestException;
 
 abstract class Gateway {
@@ -45,15 +47,20 @@ abstract class Gateway {
 
 	public static function decorateParams(array &$params, $limit, $offset)
 	{
-		if( ! is_null($limit) || ! is_null($offset))
-		{
-			if( ! isset($params['query'])) $params['query'] = [];
-			if( ! is_null($limit)) $params['query']['limit'] = $limit;
-			if( ! is_null($offset)) $params['query']['offset'] = $offset;
+		if (!is_null($limit) || !is_null($offset)) {
+				if (!isset($params['query'])) {
+	          $params['query'] = [];
+	      }
+				if (!is_null($limit)) {
+	          $params['query']['limit'] = $limit;
+	      }
+				if (!is_null($offset)) {
+	          $params['query']['offset'] = $offset;
+	      }
 		}
 	}
 
-	protected function executeCall(RequestInterface $request)
+	protected function executeCall(RequestInterface $request, $expectJson = true, $expectRedirect = false)
 	{
 		// quick fix to get the domain into a header. sorry Aaron.
 		if ($site = \RequestLogger::$site) {
@@ -61,26 +68,35 @@ abstract class Gateway {
 		} else {
 			$domain = $_SERVER['HTTP_HOST'];
 			$domain = preg_replace('/:\d+$/', '', $domain);
-		}		
+		}
 		$request->addHeader('X-DOMAIN', $domain);
 
-		try
-		{
-			$this->response = json_decode($this->http->send( $request )->getBody()->getContents());
+		try {
+			$this->response = $this->http->send( $request );
 
-			if(property_exists($this->response, 'status') && $this->response->status === 'error')
-			{
-				throw new ViimedRequestException($this->response->errors->message);
+      if ($expectRedirect) {
+          $urlTo = array_get($this->response->getHeaders(), 'Location');
+          $urlTo = array_shift($urlTo);
+
+          return $urlTo;
+      } else {
+          $this->response = $this->response->getBody()->getContents();
+      }
+
+			if ($expectJson) {
+				$this->response = json_decode($this->response);
+
+				if (property_exists($this->response, 'status') && $this->response->status === 'error') {
+					throw new ViimedRequestException($this->response->errors->message);
+				}
 			}
 
 			return $this->response;
-		}
-		catch(RequestException $e) // Catch guzzle exception
-		{
+		} catch(RequestException $e) {
+			// Catch guzzle exception
 			throw new ViimedRequestException($e->getMessage(), $e->getCode(), $e);
-		}
-		catch(Exception $e) // Catch anything else
-		{
+		} catch(Exception $e) {
+			// Catch anything else
 			throw new ViimedRequestException($e->getMessage(), $e->getCode(), $e);
 		}
 	}
