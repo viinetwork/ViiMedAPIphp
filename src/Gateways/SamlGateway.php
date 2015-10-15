@@ -52,7 +52,7 @@ class SamlGateway extends Gateway implements SamlInterface
         'body' => [Input::all()]
     ]);
 
-    return $this->executeCall($request, $expectJson = false);
+    return json_decode($this->executeCall($request, $expectJson = false));
   }
 
   public function sls()
@@ -61,6 +61,6 @@ class SamlGateway extends Gateway implements SamlInterface
 
     $request = $this->http->createRequest('GET', $route, []);
 
-    return $this->executeCall($request, $expectJson = false, $expectRedirect = true);
+    return json_decode($this->executeCall($request, $expectJson = false));
   }
 }
