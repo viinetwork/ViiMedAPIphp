@@ -59,7 +59,11 @@ class SamlGateway extends Gateway implements SamlInterface
   {
     $route = $this->getRoute('/sls');
 
-    $request = $this->http->createRequest('GET', $route, []);
+    $request = $this->http->createRequest('GET', $route);
+      $query = $request->getQuery();
+      foreach (Input::all() as $key => $value) {
+          $query[$key] = $value;
+      }
 
     return json_decode($this->executeCall($request, $expectJson = false));
   }
