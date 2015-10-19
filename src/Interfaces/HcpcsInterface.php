@@ -9,9 +9,9 @@ interface HcpcsInterface
 
     public function getAllCodeVersions($code);
 
-    public function searchCurrentVersion($queryParams);
+    public function searchCurrentVersion(Array $queryParams);
 
-    public function searchVersion($version, $queryParams);
+    public function searchVersion($version, Array $queryParams);
 
-    public function searchAllVersions($queryParams);
+    public function searchAllVersions(Array $queryParams);
 }
