@@ -17,8 +17,12 @@ return [
 	'identity' => [
 		'base_url' => ['https://localhost.viinetwork.net/api/{version}/identity', ['version' => 'v2']]
 	],
-	
+
 	'hcpcs' => [
 		'base_url' => ['https://localhost.viinetwork.net/api/{version}/hcpcs', ['version' => 'v2']]
+	],
+
+	'ingestion' => [
+		'base_url' => ['https://localhost.viinetwork.net/api/{version}/messages/post', ['version' => 'v2']]
 	],
 ];
