@@ -9,7 +9,7 @@ class IngestionGateway extends Gateway implements IngestionInterface
 {
     public function post()
     {
-        $route = $this->getRoute("messages/post");
+        $route = $this->getRoute("/post");
 
         $request = $this->http->createRequest("POST", $route, [
             'body' => [Input::all()]
