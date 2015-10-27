@@ -25,4 +25,8 @@ return [
 	'ingestion' => [
 		'base_url' => ['https://localhost.viinetwork.net/api/{version}/messages/post', ['version' => 'v2']]
 	],
+
+        'saml' => [
+                'base_url' => ['https://localhost.viinetwork.net/api/{version}/{prefix}', ['version' => 'v2', 'prefix' => 'sso']]
+        ],
 ];
