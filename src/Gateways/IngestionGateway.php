@@ -1,6 +1,7 @@
 <?php namespace Viimed\PhpApi\Gateways;
 
 use StdClass, InvalidArgumentException;
+use Laravel\Input;
 use Viimed\PhpApi\Interfaces\IngestionInterface;
 use Viimed\PhpApi\Exceptions\RequestException;
 
