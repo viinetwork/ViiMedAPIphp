@@ -14,12 +14,6 @@ class IngestionAPI {
   {
     $config = API::getConfig();
 
-    // $manager = new GatewayManager;
-    //
-    // $manager->setGateway( new SchemaGateway( new Http($config['schemas'])) );
-    //
-    // return $manager;
-
     return new IngestionGateway( new Http($config['ingestion']));
   }
 

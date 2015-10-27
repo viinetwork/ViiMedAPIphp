@@ -12,7 +12,10 @@ class IngestionGateway extends Gateway implements IngestionInterface
         $route = $this->getRoute("/post");
 
         $request = $this->http->createRequest("POST", $route, [
-            'body' => [Input::all()]
+            'headers' => [
+                'Content-Type' => 'application/json'
+            ],
+            'body' => json_encode(Input::all())
         ]);
 
         return json_decode($this->executeCall($request, $expectJson = false));
