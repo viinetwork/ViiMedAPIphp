@@ -15,7 +15,7 @@ class IngestionGateway extends Gateway implements IngestionInterface
             'headers' => [
                 'Content-Type' => 'application/json'
             ],
-            'body' => json_encode(Input::all())
+            'body' => json_encode(Input::json())
         ]);
 
         return json_decode($this->executeCall($request, $expectJson = false));
