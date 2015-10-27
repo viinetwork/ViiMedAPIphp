@@ -2,6 +2,7 @@
 
 use StdClass, InvalidArgumentException;
 use Laravel\Input;
+use Laravel\Request;
 use Viimed\PhpApi\Interfaces\IngestionInterface;
 use Viimed\PhpApi\Exceptions\RequestException;
 
@@ -15,7 +16,7 @@ class IngestionGateway extends Gateway implements IngestionInterface
             'headers' => [
                 'Content-Type' => 'application/json'
             ],
-            'body' => json_encode(Input::json())
+            'body' => Request::getContent()
         ]);
 
         return json_decode($this->executeCall($request, $expectJson = false));
