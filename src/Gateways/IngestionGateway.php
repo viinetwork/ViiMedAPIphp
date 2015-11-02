@@ -19,6 +19,6 @@ class IngestionGateway extends Gateway implements IngestionInterface
             'body' => Request::getContent()
         ]);
 
-        return json_decode($this->executeCall($request, $expectJson = false));
+        return json_decode($this->executeCall($request));
     }
 }
